@@ -62,9 +62,13 @@ function random(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 function formatNumber(value, percision = 2, seperator = '') {
-    isNaN(percision) ? percision = 2 : percision = Math.max(0, percision);
+    isNaN(percision) ? (percision = 2) : (percision = Math.max(0, percision));
     if (!value)
-        return percision === 0 ? '0' : `0.${Math.pow(10, percision).toString().slice(0 - percision)}`;
+        return percision === 0
+            ? '0'
+            : `0.${Math.pow(10, percision)
+                .toString()
+                .slice(0 - percision)}`;
     const numStr = typeOf(value) === 'string' ? value.replace(/,/g, '') : `${value || ''}`;
     const arr = numStr.split('.');
     let strInt = arr[0];
@@ -81,7 +85,9 @@ function formatNumber(value, percision = 2, seperator = '') {
     }
     else if (patchPercision > 0) {
         // 实际的小数位数比要求的小数位数小，需要补零
-        strFraction += Math.pow(10, patchPercision).toString().slice(0 - patchPercision);
+        strFraction += Math.pow(10, patchPercision)
+            .toString()
+            .slice(0 - patchPercision);
     }
     if (strFraction.length > 0) {
         return `${strInt}.${strFraction}`;
