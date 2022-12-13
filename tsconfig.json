@@ -1,0 +1,20 @@
+{
+	"include": ["packages/*/src/**/*/*.ts", "packages/*/src/**/*.ts", "packages/*/src/*.ts", "packages/*/__test__/*.*.ts", "packages/*/__test__/*/*.*.ts"],
+	"compilerOptions": {
+		"baseUrl": ".",
+		"target": "ES2016",
+		"types": ["jest", "node"],
+		"lib": ["ESNext", "DOM", "DOM.Iterable"],
+		"jsx": "preserve",
+		"module": "ESNext",
+		"moduleResolution": "node",
+		"sourceMap": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"strict": true,
+		"skipLibCheck": true,
+		"paths": {
+			"@rainbow57/*": ["packages/*/src"]
+		},
+	}
+}

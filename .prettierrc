@@ -1,0 +1,13 @@
+semi: false
+singleQuote: true
+printWidth: 100
+trailingComma: 'none'
+arrowParens: 'avoid'
+tslintIntegration: false
+useTabs: false
+tabWidth: 4
+disableLanguages: ["vue"]
+ignorePath: ".prettierignore"
+eslintIntegration: false
+jsxBracketSameLine: false
+jsxSingleQuote: false

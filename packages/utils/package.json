@@ -1,0 +1,45 @@
+{
+  "name": "@rainbow57/utils",
+  "version": "0.0.1",
+  "description": "常用工具集",
+  "main": "dist/index.js",
+  "files": [
+    "src/",
+    "dist/",
+    "LICENSE",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">14.6.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rainbow57/second-life.git",
+    "directory": "packages/cli"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "rainbow57",
+  "license": "MIT",
+  "dependencies": {
+    "gcoord": "^0.3.2"
+  },
+  "buildOptions": {
+    "name": "Vue",
+    "formats": [
+      "esm-bundler",
+      "esm-bundler-runtime",
+      "cjs",
+      "global",
+      "global-runtime",
+      "esm-browser",
+      "esm-browser-runtime"
+    ]
+  }
+}
