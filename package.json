@@ -1,6 +1,6 @@
 {
   "name": "@rainbow57/packages",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "前端常用工具集",
   "main": "dist/utils.cjs.js",
   "module": "dist/utils.esm.js",
@@ -23,7 +23,7 @@
   "scripts": {
     "build": "node scripts/build.js",
     "release": "node scripts/release.js",
-    "lint": "eslint --cache --ext .ts packages/*/{src, __test__}/**.ts",
+    "lint": "eslint --cache --ext .ts packages/*/{src, __tests__}/**.ts",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "test": "jest --coverage",
     "postinstall": "simple-git-hooks"

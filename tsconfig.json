@@ -1,5 +1,5 @@
 {
-	"include": ["packages/*/src/**/*/*.ts", "packages/*/src/**/*.ts", "packages/*/src/*.ts", "packages/*/__test__/*.*.ts", "packages/*/__test__/*/*.*.ts"],
+	"include": ["packages/*/src/**/*/*.ts", "packages/*/src/**/*.ts", "packages/*/src/*.ts", "packages/*/__tests__/*.*.ts", "packages/*/__tests__/*/*.*.ts"],
 	"compilerOptions": {
 		"baseUrl": ".",
 		"target": "ES2016",

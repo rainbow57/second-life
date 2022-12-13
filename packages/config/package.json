@@ -1,8 +1,8 @@
 {
   "name": "@rainbow57/config",
-  "version": "0.0.1",
-  "description": "",
-  "main": "dist/index.js",
+  "version": "0.0.2",
+  "description": "查询、表格、新增/编辑 Form的字段定义",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,6 +11,8 @@
   "license": "ISC",
   "files": [
     "dist/",
-    "src/"
+    "src/",
+    "index.js",
+    "index.mjs"
   ]
 }
