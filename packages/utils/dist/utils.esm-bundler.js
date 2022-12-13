@@ -19,23 +19,23 @@ function formatDateTime(dateTime, format = 'YYYY-MM-DD HH:mm:ss') {
     return format.replace(/(Y+|M+|D+|H+|m+|s+)/g, (replaceValue) => String((replaceValue.length > 1 ? '0' : '') + obj[replaceValue.slice(-1)]).slice(-(replaceValue.length > 2 ? replaceValue.length : 2)));
 }
 
-const bd09ToGcj02 = (latitude, longitude) => {
-    return gcoord.transform([latitude, longitude], gcoord.BD09, gcoord.GCJ02);
+const bd09ToGcj02 = (longitude, latitude) => {
+    return gcoord.transform([longitude, latitude], gcoord.BD09, gcoord.GCJ02);
 };
-const gcj02ToBd09 = (latitude, longitude) => {
-    return gcoord.transform([latitude, longitude], gcoord.GCJ02, gcoord.BD09);
+const gcj02ToBd09 = (longitude, latitude) => {
+    return gcoord.transform([longitude, latitude], gcoord.GCJ02, gcoord.BD09);
 };
-const bd09ToWgs84 = (latitude, longitude) => {
-    return gcoord.transform([latitude, longitude], gcoord.BD09, gcoord.WGS84);
+const bd09ToWgs84 = (longitude, latitude) => {
+    return gcoord.transform([longitude, latitude], gcoord.BD09, gcoord.WGS84);
 };
-const wgs84ToBd09 = (latitude, longitude) => {
-    return gcoord.transform([latitude, longitude], gcoord.WGS84, gcoord.BD09);
+const wgs84ToBd09 = (longitude, latitude) => {
+    return gcoord.transform([longitude, latitude], gcoord.WGS84, gcoord.BD09);
 };
-const gcj02ToWgs84 = (latitude, longitude) => {
-    return gcoord.transform([latitude, longitude], gcoord.GCJ02, gcoord.WGS84);
+const gcj02ToWgs84 = (longitude, latitude) => {
+    return gcoord.transform([longitude, latitude], gcoord.GCJ02, gcoord.WGS84);
 };
-const wgs84ToGcj02 = (latitude, longitude) => {
-    return gcoord.transform([latitude, longitude], gcoord.WGS84, gcoord.GCJ02);
+const wgs84ToGcj02 = (longitude, latitude) => {
+    return gcoord.transform([longitude, latitude], gcoord.WGS84, gcoord.GCJ02);
 };
 
 function typeOf(value) {
