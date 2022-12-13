@@ -65,7 +65,7 @@ async function publishPackage(packageName, version, runIfNotDry) {
             ],
             { cwd: pkgRoot, stdio: 'pipe' }
         )
-        console.log(chalk.gree(`Successfully published ${packageName}@${version}`))
+        console.log(chalk.green(`Successfully published ${packageName}@${version}`))
     } catch (e) {
         console.log(e)
         if (e.stderr && e.stderr.match(/previously published/)) {
