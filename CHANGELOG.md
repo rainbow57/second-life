@@ -1,3 +1,7 @@
+## [0.0.6](https://github.com/rainbow57/second-life/compare/v0.0.5...v0.0.6) (2022-12-19)
+
+
+
 ## [0.0.5](https://github.com/rainbow57/second-life/compare/v0.0.4...v0.0.5) (2022-12-13)
 
 

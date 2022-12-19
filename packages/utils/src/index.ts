@@ -21,6 +21,27 @@ export function random(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
+export function isEmpty(value: any, deep: boolean = false): boolean {
+    if (typeOf(value) === 'number') return isNaN(value)
+    if (typeOf(value) === 'boolean') return false
+    if (!value) return true
+    // 如果是数组，没有元素，则返回空
+    if (typeOf(value) === 'array') {
+        if (!value.length) return true
+        // 不检查深层对象，并且数组长度不为 0，则返回 false
+        if (!deep && value.length) return false
+        const arr = deep ? deleteEmptyArray(value) : value
+        if (!arr.length) return true
+        return false
+    } else if (typeOf(value) === 'object') {
+        //  如果是对象
+        const obj = deep ? deleteEmpty(value) : value
+        // 是否没有键值对
+        return deep ? JSON.stringify(obj) === '{}' : false
+    }
+    return false
+}
+
 export function formatNumber(
     value: number | string,
     percision: number = 2,
@@ -72,8 +93,7 @@ export function deleteEmpty(
     obj: object | null,
     empties: any[] = ['', undefined, null]
 ): object | null {
-    if (obj === null) return null
-    if (!obj) return {}
+    if (!obj) return obj
     // 处理数组
     if (typeOf(obj) === 'array') {
         return deleteEmptyArray(obj as any[], empties)
@@ -87,7 +107,9 @@ export function deleteEmpty(
         if (empties.includes(value)) continue
 
         if (valueType === 'array') {
-            result[key] = deleteEmptyArray(value, empties)
+            if (value.length) {
+                result[key] = deleteEmptyArray(value, empties)
+            }
         } else if (valueType === 'object') {
             result[key] = deleteEmpty(value, empties)
         } else {
@@ -95,4 +117,35 @@ export function deleteEmpty(
         }
     }
     return result
+}
+
+// http
+export function parseQuery(url: string, types: fieldType[] = []): objectType {
+    if (!url) return {}
+    const search = url.split('?')[1]
+    if (!search) return {}
+    const query: objectType = JSON.parse(
+        `{"${decodeURIComponent(search)
+            .replace(/"/g, '"')
+            .replace(/&/g, '","')
+            .replace(/=/g, '":"')
+            .replace(/\+/g, ' ')}"}`
+    )
+    if (types && types.length) {
+        types.forEach(item => {
+            const { prop = '', type = '' } = item
+            if (!prop || !type) return
+            if (query[prop]) {
+                // 按规定的格式调整数据类型
+                if (type === 'number') {
+                    query[prop] = parseFloat(query[prop])
+                } else if (type === 'string') {
+                    query[prop] = query[prop] ? query[prop] + '' : ''
+                } else if (type === 'boolean') {
+                    query[prop] = query[prop] === 'true' || query[prop] === true
+                }
+            }
+        })
+    }
+    return query
 }

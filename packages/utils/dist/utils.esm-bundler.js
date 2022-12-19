@@ -20,27 +20,51 @@ function formatDateTime(dateTime, format = 'YYYY-MM-DD HH:mm:ss') {
 }
 
 const bd09ToGcj02 = (longitude, latitude) => {
-    const gps = gcoord.transform([longitude, latitude], gcoord.BD09, gcoord.GCJ02);
+    longitude = Number(longitude);
+    latitude = Number(latitude);
+    if (isNaN(longitude) || isNaN(latitude) || !longitude || !latitude)
+        return { longitude: 0, latitude: 0 };
+    const gps = gcoord.transform([Number(longitude), Number(latitude)], gcoord.BD09, gcoord.GCJ02);
     return { longitude: gps[0], latitude: gps[1] };
 };
 const gcj02ToBd09 = (longitude, latitude) => {
-    const gps = gcoord.transform([longitude, latitude], gcoord.GCJ02, gcoord.BD09);
+    longitude = Number(longitude);
+    latitude = Number(latitude);
+    if (isNaN(longitude) || isNaN(latitude) || !longitude || !latitude)
+        return { longitude: 0, latitude: 0 };
+    const gps = gcoord.transform([Number(longitude), Number(latitude)], gcoord.GCJ02, gcoord.BD09);
     return { longitude: gps[0], latitude: gps[1] };
 };
 const bd09ToWgs84 = (longitude, latitude) => {
-    const gps = gcoord.transform([longitude, latitude], gcoord.BD09, gcoord.WGS84);
+    longitude = Number(longitude);
+    latitude = Number(latitude);
+    if (isNaN(longitude) || isNaN(latitude) || !longitude || !latitude)
+        return { longitude: 0, latitude: 0 };
+    const gps = gcoord.transform([Number(longitude), Number(latitude)], gcoord.BD09, gcoord.WGS84);
     return { longitude: gps[0], latitude: gps[1] };
 };
 const wgs84ToBd09 = (longitude, latitude) => {
-    const gps = gcoord.transform([longitude, latitude], gcoord.WGS84, gcoord.BD09);
+    longitude = Number(longitude);
+    latitude = Number(latitude);
+    if (isNaN(longitude) || isNaN(latitude) || !longitude || !latitude)
+        return { longitude: 0, latitude: 0 };
+    const gps = gcoord.transform([Number(longitude), Number(latitude)], gcoord.WGS84, gcoord.BD09);
     return { longitude: gps[0], latitude: gps[1] };
 };
 const gcj02ToWgs84 = (longitude, latitude) => {
-    const gps = gcoord.transform([longitude, latitude], gcoord.GCJ02, gcoord.WGS84);
+    longitude = Number(longitude);
+    latitude = Number(latitude);
+    if (isNaN(longitude) || isNaN(latitude) || !longitude || !latitude)
+        return { longitude: 0, latitude: 0 };
+    const gps = gcoord.transform([Number(longitude), Number(latitude)], gcoord.GCJ02, gcoord.WGS84);
     return { longitude: gps[0], latitude: gps[1] };
 };
 const wgs84ToGcj02 = (longitude, latitude) => {
-    const gps = gcoord.transform([longitude, latitude], gcoord.WGS84, gcoord.GCJ02);
+    longitude = Number(longitude);
+    latitude = Number(latitude);
+    if (isNaN(longitude) || isNaN(latitude) || !longitude || !latitude)
+        return { longitude: 0, latitude: 0 };
+    const gps = gcoord.transform([Number(longitude), Number(latitude)], gcoord.WGS84, gcoord.GCJ02);
     return { longitude: gps[0], latitude: gps[1] };
 };
 
@@ -64,6 +88,33 @@ function random(min, max) {
         max = Number.MAX_VALUE;
     }
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function isEmpty(value, deep = false) {
+    if (typeOf(value) === 'number')
+        return isNaN(value);
+    if (typeOf(value) === 'boolean')
+        return false;
+    if (!value)
+        return true;
+    // 如果是数组，没有元素，则返回空
+    if (typeOf(value) === 'array') {
+        if (!value.length)
+            return true;
+        // 不检查深层对象，并且数组长度不为 0，则返回 false
+        if (!deep && value.length)
+            return false;
+        const arr = deep ? deleteEmptyArray(value) : value;
+        if (!arr.length)
+            return true;
+        return false;
+    }
+    else if (typeOf(value) === 'object') {
+        //  如果是对象
+        const obj = deep ? deleteEmpty(value) : value;
+        // 是否没有键值对
+        return deep ? JSON.stringify(obj) === '{}' : false;
+    }
+    return false;
 }
 function formatNumber(value, percision = 2, seperator = '') {
     isNaN(percision) ? (percision = 2) : (percision = Math.max(0, percision));
@@ -106,10 +157,8 @@ function deleteEmptyArray(obj, empties = ['', undefined, null]) {
         .map((item) => typeOf(item) === 'object' ? deleteEmpty(item, empties) : item);
 }
 function deleteEmpty(obj, empties = ['', undefined, null]) {
-    if (obj === null)
-        return null;
     if (!obj)
-        return {};
+        return obj;
     // 处理数组
     if (typeOf(obj) === 'array') {
         return deleteEmptyArray(obj, empties);
@@ -122,7 +171,9 @@ function deleteEmpty(obj, empties = ['', undefined, null]) {
         if (empties.includes(value))
             continue;
         if (valueType === 'array') {
-            result[key] = deleteEmptyArray(value, empties);
+            if (value.length) {
+                result[key] = deleteEmptyArray(value, empties);
+            }
         }
         else if (valueType === 'object') {
             result[key] = deleteEmpty(value, empties);
@@ -133,5 +184,34 @@ function deleteEmpty(obj, empties = ['', undefined, null]) {
     }
     return result;
 }
+// http
+function parseQuery(url, types = []) {
+    if (!url)
+        return {};
+    const search = url.split('?')[1];
+    if (!search)
+        return {};
+    const query = JSON.parse(`{"${decodeURIComponent(search).replace(/"/g, '\"').replace(/&/g, '","').replace(/=/g, '":"').replace(/\+/g, ' ')}"}`);
+    if (types && types.length) {
+        types.forEach(item => {
+            const { prop = '', type = '' } = item;
+            if (!prop || !type)
+                return;
+            if (query[prop]) {
+                // 按规定的格式调整数据类型
+                if (type === 'number') {
+                    query[prop] = parseFloat(query[prop]);
+                }
+                else if (type === 'string') {
+                    query[prop] = query[prop] ? query[prop] + '' : '';
+                }
+                else if (type === 'boolean') {
+                    query[prop] = query[prop] === 'true' || query[prop] === true;
+                }
+            }
+        });
+    }
+    return query;
+}
 
-export { bd09ToGcj02, bd09ToWgs84, deleteEmpty, deleteEmptyArray, formatDateTime, formatNumber, gcj02ToBd09, gcj02ToWgs84, random, typeOf, wgs84ToBd09, wgs84ToGcj02 };
+export { bd09ToGcj02, bd09ToWgs84, deleteEmpty, deleteEmptyArray, formatDateTime, formatNumber, gcj02ToBd09, gcj02ToWgs84, isEmpty, parseQuery, random, typeOf, wgs84ToBd09, wgs84ToGcj02 };

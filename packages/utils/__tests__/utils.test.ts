@@ -1,4 +1,12 @@
-import { random, formatNumber, typeOf, deleteEmpty, deleteEmptyArray } from '../src/index'
+import {
+    random,
+    formatNumber,
+    typeOf,
+    deleteEmpty,
+    deleteEmptyArray,
+    isEmpty,
+    parseQuery
+} from '../src/index'
 
 describe('生成大于等于 min，小于等于 max 的随机整数 -> random', () => {
     it('random(1, 1) -> should return 1', () => {
@@ -19,6 +27,90 @@ describe('生成大于等于 min，小于等于 max 的随机整数 -> random', 
         const num = random(1, 10)
         expect(num).toBeGreaterThanOrEqual(1)
         expect(num).toBeLessThanOrEqual(10)
+    })
+})
+
+describe('是否为空，数字类型 -> isEmpty', () => {
+    it('isEmpty(NaN) -> true', () => {
+        expect(isEmpty(NaN)).toEqual(true)
+    })
+    it('isEmpty(-1) -> false', () => {
+        expect(isEmpty(-1)).toEqual(false)
+    })
+    it('isEmpty(0) -> false', () => {
+        expect(isEmpty(0)).toEqual(false)
+    })
+    it('isEmpty(1) -> false', () => {
+        expect(isEmpty(1)).toEqual(false)
+    })
+})
+
+describe('是否为空，字符串 -> isEmpty', () => {
+    it('isEmpty("") -> true', () => {
+        expect(isEmpty('')).toEqual(true)
+    })
+    it('isEmpty("-1") -> false', () => {
+        expect(isEmpty('-1')).toEqual(false)
+    })
+    it('isEmpty("0") -> false', () => {
+        expect(isEmpty('0')).toEqual(false)
+    })
+})
+
+describe('是否为空，布尔类型 -> isEmpty', () => {
+    it('isEmpty(true) -> false', () => {
+        expect(isEmpty(true)).toEqual(false)
+    })
+    it('isEmpty(false) -> false', () => {
+        expect(isEmpty(false)).toEqual(false)
+    })
+})
+
+describe('是否为空，函数类型 -> isEmpty', () => {
+    it('isEmpty(() => {}) -> false', () => {
+        expect(isEmpty(() => {})).toEqual(false)
+    })
+})
+
+describe('是否为空，对象类型 -> isEmpty', () => {
+    it('isEmpty(undefined) -> true', () => {
+        expect(isEmpty(undefined)).toEqual(true)
+    })
+    it('isEmpty(null) -> true', () => {
+        expect(isEmpty(null)).toEqual(true)
+    })
+    it('isEmpty(null, true) -> true', () => {
+        expect(isEmpty(null, true)).toEqual(true)
+    })
+    it('isEmpty({}) -> false', () => {
+        expect(isEmpty({})).toEqual(false)
+    })
+    it('isEmpty({}, true) -> true', () => {
+        expect(isEmpty({}, true)).toEqual(true)
+    })
+})
+
+describe('是否为空，数组类型 -> isEmpty', () => {
+    it('isEmpty([]) -> true', () => {
+        expect(isEmpty([])).toEqual(true)
+    })
+    it('isEmpty([undefined]) -> false', () => {
+        expect(isEmpty([undefined])).toEqual(false)
+    })
+    it('isEmpty([null]) -> false', () => {
+        expect(isEmpty([null])).toEqual(false)
+    })
+    it('isEmpty([null], true) -> true', () => {
+        expect(isEmpty([null], true)).toEqual(true)
+    })
+    it('isEmpty([1]) -> false', () => {
+        expect(isEmpty([1])).toEqual(false)
+    })
+    it('isEmpty([{a: 1}]) -> false', () => {
+        expect(isEmpty([{ a: 1 }])).toEqual(false)
+    })
+    it('isEmpty([{a: 1}], true) -> false', () => {
+        expect(isEmpty([{ a: 1 }], true)).toEqual(false)
     })
 })
 
@@ -204,6 +296,11 @@ describe('删除数组中指定的空值 -> deleteEmptyArray', () => {
 })
 
 describe('删除简单对象中默认的空值 -> deleteEmpty', () => {
+    // null 对象
+    it('deleteEmpty(null) should return null', () => {
+        const result = deleteEmpty(null)
+        expect(result).toEqual(null)
+    })
     // 对象
     it('deleteEmpty({}) should return {}', () => {
         const result = deleteEmpty({})
@@ -257,5 +354,42 @@ describe('删除对象中指定的空值 -> deleteEmpty', () => {
     it('deleteEmpty([]) should return []', () => {
         const result = deleteEmpty([])
         expect(JSON.stringify(result)).toEqual('[]')
+    })
+})
+
+describe('解析 url 中 的参数 -> parseQuery', () => {
+    it('空字符串传入 should return {}', () => {
+        expect(parseQuery('')).toEqual({})
+    })
+    it('无参数 URL传入 should return {}', () => {
+        expect(parseQuery('https://www.baidu.com')).toEqual({})
+    })
+    it('简单参数 URL传入 should return {baidu: "123"}', () => {
+        expect(parseQuery('https://www.baidu.com?baidu=123')).toEqual({ baidu: '123' })
+    })
+    it('简单参数 URL传入，带字段类型 should return {baidu: 123}', () => {
+        expect(
+            parseQuery('https://www.baidu.com?baidu=123', [{ prop: 'baidu', type: 'number' }])
+        ).toEqual({ baidu: 123 })
+    })
+    it('简单参数 URL传入 should return {baidu: "123", google: "true"}', () => {
+        expect(parseQuery('https://www.baidu.com?baidu=123&google=true')).toEqual({
+            baidu: '123',
+            google: 'true'
+        })
+    })
+    it('简单参数 URL传入，带字段类型 should return {baidu: 123, google: true}', () => {
+        const query = parseQuery('https://www.baidu.com?baidu=123&google=true', [
+            { prop: 'baidu', type: 'number' },
+            { prop: 'google', type: 'boolean' }
+        ])
+        expect(query).toEqual({ baidu: 123, google: true })
+    })
+    it('简单参数 URL传入，带字段类型 should return {baidu: 123, google: "true"}', () => {
+        const query = parseQuery('https://www.baidu.com?baidu=123&google=true', [
+            { prop: 'baidu', type: 'number' },
+            { prop: 'google', type: 'string' }
+        ])
+        expect(query).toEqual({ baidu: 123, google: 'true' })
     })
 })
