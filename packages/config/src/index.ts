@@ -13,6 +13,12 @@ export const createField = function (params: any = {}): field {
         showInTable = false,
         showInForm = false
     } = params || {}
+    if (showInSearch) {
+    }
+    if (showInTable) {
+    }
+    if (showInForm) {
+    }
     return {
         prop,
         label,
