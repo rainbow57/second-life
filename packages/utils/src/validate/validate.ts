@@ -20,7 +20,7 @@ export function isUrl(url: any): boolean {
  */
 export function isExternal(url: any): boolean {
     if (typeOf(url) !== 'string' || !url) return false
-    return /^(https?:|mailto:|tel:)/.test(url)
+    return /^(https?:|mailto:|tel:|ftp:)/.test(url)
 }
 /**
  * 是否全部小写
@@ -79,7 +79,7 @@ export function isObject(value: any): boolean {
  * @param phone
  * @returns
  */
-export function isPhone(phone: string): boolean {
+export function isPhone(phone: any): boolean {
     const reg = /^[1][1-9][0-9]{9}$/
     if (!phone) return false
     return reg.test(phone)

@@ -1,5 +1,6 @@
 export * from './time'
 export * from './map'
+export * from './validate/validate'
 
 export function typeOf(value: any): string {
     let type = typeof value
