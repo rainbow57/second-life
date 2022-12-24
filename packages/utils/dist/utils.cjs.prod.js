@@ -70,6 +70,91 @@ const wgs84ToGcj02 = (longitude, latitude) => {
     return { longitude: gps[0], latitude: gps[1] };
 };
 
+// 校验相关函数
+/**
+ * 是否 URL
+ * @param url URL
+ * @returns 是/否
+ */
+function isUrl(url) {
+    if (typeOf(url) !== 'string' || !url)
+        return false;
+    const reg = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
+    return reg.test(url);
+}
+/**
+ * 是否外部链接
+ * @param url URL
+ * @returns 是/否
+ */
+function isExternal(url) {
+    if (typeOf(url) !== 'string' || !url)
+        return false;
+    return /^(https?:|mailto:|tel:|ftp:)/.test(url);
+}
+/**
+ * 是否全部小写
+ * @param value 字符串
+ * @returns 是/否
+ */
+function isLowerCase(value) {
+    if (typeOf(value) !== 'string' || !value)
+        return false;
+    return /^[a-z]+$/.test(value);
+}
+/**
+ * 是否全部大写
+ * @param value 字符串
+ * @returns 是/否
+ */
+function isUpperCase(value) {
+    if (typeOf(value) !== 'string' || !value)
+        return false;
+    return /^[A-Z]+$/.test(value);
+}
+function isAlphabets(value) {
+    if (typeOf(value) !== 'string' || !value)
+        return false;
+    return /^[A-Za-z]+$/.test(value);
+}
+/**
+ * 是否电子邮箱
+ * @param value
+ * @returns
+ */
+function isEmail(value) {
+    if (typeOf(value) !== 'string' || !value)
+        return false;
+    const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return reg.test(value);
+}
+function isString(value) {
+    if (typeof value === 'string' || value instanceof String) {
+        return true;
+    }
+    return false;
+}
+function isArray(value) {
+    if (typeof Array.isArray === 'undefined') {
+        return Object.prototype.toString.call(value) === '[object Array]';
+    }
+    return Array.isArray(value);
+}
+function isObject(value) {
+    return typeOf(value) === 'object';
+}
+/**
+ * 是否手机号
+ * @param phone
+ * @returns
+ */
+function isPhone(phone) {
+    const reg = /^[1][1-9][0-9]{9}$/;
+    if (!phone)
+        return false;
+    return reg.test(phone);
+}
+
 function typeOf(value) {
     let type = typeof value;
     if (type === 'object') {
@@ -193,7 +278,11 @@ function parseQuery(url, types = []) {
     const search = url.split('?')[1];
     if (!search)
         return {};
-    const query = JSON.parse(`{"${decodeURIComponent(search).replace(/"/g, '\"').replace(/&/g, '","').replace(/=/g, '":"').replace(/\+/g, ' ')}"}`);
+    const query = JSON.parse(`{"${decodeURIComponent(search)
+        .replace(/"/g, '"')
+        .replace(/&/g, '","')
+        .replace(/=/g, '":"')
+        .replace(/\+/g, ' ')}"}`);
     if (types && types.length) {
         types.forEach(item => {
             const { prop = '', type = '' } = item;
@@ -224,7 +313,17 @@ exports.formatDateTime = formatDateTime;
 exports.formatNumber = formatNumber;
 exports.gcj02ToBd09 = gcj02ToBd09;
 exports.gcj02ToWgs84 = gcj02ToWgs84;
+exports.isAlphabets = isAlphabets;
+exports.isArray = isArray;
+exports.isEmail = isEmail;
 exports.isEmpty = isEmpty;
+exports.isExternal = isExternal;
+exports.isLowerCase = isLowerCase;
+exports.isObject = isObject;
+exports.isPhone = isPhone;
+exports.isString = isString;
+exports.isUpperCase = isUpperCase;
+exports.isUrl = isUrl;
 exports.parseQuery = parseQuery;
 exports.random = random;
 exports.typeOf = typeOf;

@@ -1,3 +1,12 @@
+## [0.0.7](https://github.com/rainbow57/second-life/compare/v0.0.6...v0.0.7) (2022-12-24)
+
+
+### Features
+
+* :sparkles: utils新增一些校验函数 ([e6ad15b](https://github.com/rainbow57/second-life/commit/e6ad15bd1660010b415f6bd6d0bd7efa880929cd))
+
+
+
 ## [0.0.6](https://github.com/rainbow57/second-life/compare/v0.0.5...v0.0.6) (2022-12-19)
 
 
