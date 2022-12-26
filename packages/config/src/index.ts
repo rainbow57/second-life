@@ -5,13 +5,15 @@ export const createField = function (params: any = {}): field {
             label: ''
         }
     }
+    /* eslint no-restricted-syntax: ["error", "WithStatement", "BinaryExpression[operator='in']"] */
     const {
         prop = '',
         label = '',
         searchType,
         showInSearch = false,
         showInTable = false,
-        showInForm = false
+        showInForm = false,
+        ...rest
     } = params || {}
     if (showInSearch) {
     }
@@ -25,6 +27,7 @@ export const createField = function (params: any = {}): field {
         searchType,
         showInForm,
         showInSearch,
-        showInTable
+        showInTable,
+        ...rest
     }
 }

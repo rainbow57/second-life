@@ -3,7 +3,7 @@ export function formatDateTime(
     format: string = 'YYYY-MM-DD HH:mm:ss'
 ): string {
     if (!dateTime) return ''
-    let _dateTime = new Date(dateTime)
+    const _dateTime = new Date(dateTime)
     if (_dateTime.toString() === 'Invalid Date') {
         // console.error('传入的时间格式错误')
         return ''
@@ -21,4 +21,23 @@ export function formatDateTime(
             -(replaceValue.length > 2 ? replaceValue.length : 2)
         )
     )
+}
+
+export function getDateRange(
+    days: number = 0,
+    format: string = 'YYYY-MM-DD HH:mm:ss'
+): string[] | null {
+    days = parseInt(days + '')
+    if (isNaN(days)) return null
+
+    const now = new Date()
+    let start, end
+    if (days < 0) {
+        start = `${formatDateTime(now, 'YYYY-MM-DD')} 00:00:00`
+        end = `${formatDateTime(now.setDate(now.getDate() - days), 'YYYY-MM-DD')} 23:59:59`
+    } else {
+        end = `${formatDateTime(now, 'YYYY-MM-DD')} 23:59:59`
+        start = `${formatDateTime(now.setDate(now.getDate() - days), 'YYYY-MM-DD')} 00:00:00`
+    }
+    return [formatDateTime(start, format), formatDateTime(end, format)]
 }
