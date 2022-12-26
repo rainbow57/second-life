@@ -1,3 +1,12 @@
+## [0.0.8](https://github.com/rainbow57/second-life/compare/v0.0.7...v0.0.8) (2022-12-26)
+
+
+### Features
+
+* :sparkles: 新增函数 getDateRange ([e88dd8a](https://github.com/rainbow57/second-life/commit/e88dd8a84afbb0c18811c4d36642c8160460798e))
+
+
+
 ## [0.0.7](https://github.com/rainbow57/second-life/compare/v0.0.6...v0.0.7) (2022-12-24)
 
 
