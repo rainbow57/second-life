@@ -50,7 +50,6 @@ async function build(target) {
     if (!formats) {
         await fs.remove(`${pkgDir}/dist`)
     }
-    console.log('pkg.buildOptions :>> ', pkg.buildOptions)
     const env =
         (pkg.buildOptions && pkg.buildOptions.env) || (devOnly ? 'development' : 'production')
     await execa(

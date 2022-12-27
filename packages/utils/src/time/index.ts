@@ -1,6 +1,27 @@
+import { typeOf } from '..'
+
 export const hourTimestamp = 1000 * 60 * 60
 
 export const dayTimestamp = 24 * hourTimestamp
+
+export const dateTypes = [
+    'millisecond',
+    'milliseconds',
+    'second',
+    'seconds',
+    'minute',
+    'minutes',
+    'hour',
+    'hours',
+    'day',
+    'days',
+    'week',
+    'weeks',
+    'mounth',
+    'mounths',
+    'year',
+    'years'
+]
 
 export function formatDateTime(
     dateTime: string | number | Date,
@@ -25,6 +46,28 @@ export function formatDateTime(
             -(replaceValue.length > 2 ? replaceValue.length : 2)
         )
     )
+}
+
+export function getDateInterval(start: any, end: any, type: string = 'milliseconds'): number {
+    if (!start || !end) return 0
+    start = new Date(start)
+    end = new Date(end)
+    if (typeOf(start) !== 'date' || typeOf(end) !== 'date') return 0
+    if (start.toString() === 'Invalid Date' || end.toString() === 'Invalid Date') return 0
+
+    const milliseconds = Math.abs(end - start)
+    if (['second', 'seconds'].includes(type)) {
+        return Math.floor(milliseconds / 1000)
+    } else if (['minute', 'minutes'].includes(type)) {
+        return Math.floor(milliseconds / (1000 * 60))
+    } else if (['hour', 'hours'].includes(type)) {
+        return Math.floor(milliseconds / hourTimestamp)
+    } else if (['day', 'days'].includes(type)) {
+        return Math.floor(milliseconds / dayTimestamp)
+    } else if (['week', 'weeks'].includes(type)) {
+        return Math.floor(milliseconds / (dayTimestamp * 7))
+    }
+    return milliseconds
 }
 
 export function getDateRange(
