@@ -1,3 +1,12 @@
+## [0.0.9](https://github.com/rainbow57/second-life/compare/v0.0.8...v0.0.9) (2022-12-27)
+
+
+### Features
+
+* :sparkles: 新增函数：stringifyQuery 用于将对象类型转换成 URL 中 search 类型的字符串键值对 ([d330e29](https://github.com/rainbow57/second-life/commit/d330e294239e8f568feaac654f388e583791b713))
+
+
+
 ## [0.0.8](https://github.com/rainbow57/second-life/compare/v0.0.7...v0.0.8) (2022-12-26)
 
 

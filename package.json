@@ -1,6 +1,6 @@
 {
   "name": "@rainbow57/packages",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "前端常用工具集",
   "main": "dist/utils.cjs.js",
   "module": "dist/utils.esm.js",
