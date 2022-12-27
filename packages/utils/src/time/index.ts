@@ -1,3 +1,7 @@
+export const hourTimestamp = 1000 * 60 * 60
+
+export const dayTimestamp = 24 * hourTimestamp
+
 export function formatDateTime(
     dateTime: string | number | Date,
     format: string = 'YYYY-MM-DD HH:mm:ss'

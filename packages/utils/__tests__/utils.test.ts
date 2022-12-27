@@ -5,7 +5,8 @@ import {
     deleteEmpty,
     deleteEmptyArray,
     isEmpty,
-    parseQuery
+    parseQuery,
+    stringifyQuery
 } from '../src/index'
 
 describe('生成大于等于 min，小于等于 max 的随机整数 -> random', () => {
@@ -391,5 +392,38 @@ describe('解析 url 中 的参数 -> parseQuery', () => {
             { prop: 'google', type: 'string' }
         ])
         expect(query).toEqual({ baidu: 123, google: 'true' })
+    })
+})
+
+describe('将对象类型解析成 URL 上的 query 键值对字符串 -> stringifyQuery', () => {
+    it('stringifyQuery() -> should return ""', () => {
+        expect(stringifyQuery(undefined)).toEqual('')
+        expect(stringifyQuery(null)).toEqual('')
+        expect(stringifyQuery(0)).toEqual('')
+        expect(stringifyQuery(NaN)).toEqual('')
+        expect(stringifyQuery('')).toEqual('')
+        expect(stringifyQuery('aaa')).toEqual('')
+        expect(stringifyQuery(2)).toEqual('')
+        expect(stringifyQuery(true)).toEqual('')
+        expect(stringifyQuery({})).toEqual('')
+        expect(stringifyQuery(() => {})).toEqual('')
+    })
+    it('stringifyQuery({a: 1, b: 2}) -> should return "a=1&b=2"', () => {
+        expect(stringifyQuery({ a: 1, b: 2 })).toEqual('a=1&b=2')
+    })
+    it('stringifyQuery({"a_b": 1, "b_c": 2}) -> should return "a_b=1&b_c=2"', () => {
+        expect(stringifyQuery({ a_b: 1, b_c: 2 })).toEqual('a_b=1&b_c=2')
+    })
+    it('stringifyQuery({"a&b": 1, "b&c": 2}) -> should return ""', () => {
+        expect(stringifyQuery({ 'a&b': 1, 'b&c': 2 })).toEqual('')
+    })
+    it('stringifyQuery({"a=b": 1, "b=c": 2}) -> should return ""', () => {
+        expect(stringifyQuery({ 'a=b': 1, 'b=c': 2 })).toEqual('')
+    })
+    it('stringifyQuery({"a%26b": 1, "b%26c": 2}) -> should return ""', () => {
+        expect(stringifyQuery({ 'a%26b': 1, 'b%26c': 2 })).toEqual('')
+    })
+    it('stringifyQuery({"a%3Db": 1, "b%3Dc": 2}) -> should return ""', () => {
+        expect(stringifyQuery({ 'a%3Db': 1, 'b%3Dc': 2 })).toEqual('')
     })
 })

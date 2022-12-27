@@ -150,3 +150,23 @@ export function parseQuery(url: string, types: fieldType[] = []): objectType {
     }
     return query
 }
+
+export function stringifyQuery(query: objectType = {}): string {
+    if (!query) return ''
+    if (typeOf(query) !== 'object') return ''
+    return Object.keys(query)
+        .filter(
+            key =>
+                !decodeURIComponent(key).includes('&') &&
+                !decodeURIComponent(key).includes('=') &&
+                !decodeURIComponent(query[key]).includes('&') &&
+                !decodeURIComponent(query[key]).includes('=')
+        )
+        .map(
+            key =>
+                `${encodeURIComponent(decodeURIComponent(key))}=${
+                    !query[key] ? '' : encodeURIComponent(decodeURIComponent(query[key]))
+                }`
+        )
+        .join('&')
+}
