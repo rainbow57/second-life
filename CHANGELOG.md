@@ -1,3 +1,12 @@
+## [0.0.10](https://github.com/rainbow57/second-life/compare/v0.0.9...v0.0.10) (2022-12-27)
+
+
+### Features
+
+* :sparkles: 新增函数 getDateInterval 获取两个日期之间的间隔 ([c240782](https://github.com/rainbow57/second-life/commit/c240782eefe8ff74142ac121f936654a1b436dc3))
+
+
+
 ## [0.0.9](https://github.com/rainbow57/second-life/compare/v0.0.8...v0.0.9) (2022-12-27)
 
 

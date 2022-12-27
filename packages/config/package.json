@@ -1,6 +1,6 @@
 {
   "name": "@rainbow57/config",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "查询、表格、新增/编辑 Form的字段定义",
   "main": "index.js",
   "scripts": {
