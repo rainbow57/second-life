@@ -1,3 +1,12 @@
+## [0.0.11](https://github.com/rainbow57/second-life/compare/v0.0.10...v0.0.11) (2022-12-28)
+
+
+### Features
+
+* :sparkles: 新增函数：list2Tree、getParentId；完善 parseQuery 函数 ([5690b00](https://github.com/rainbow57/second-life/commit/5690b00dbb37ab20d0fcf97bbe179bf72433c742))
+
+
+
 ## [0.0.10](https://github.com/rainbow57/second-life/compare/v0.0.9...v0.0.10) (2022-12-27)
 
 
