@@ -358,12 +358,15 @@ describe('删除对象中指定的空值 -> deleteEmpty', () => {
     })
 })
 
-describe('解析 url 中 的参数 -> parseQuery', () => {
+describe('====解析 url 中 的参数 -> parseQuery====', () => {
     it('空字符串传入 should return {}', () => {
         expect(parseQuery('')).toEqual({})
     })
     it('无参数 URL传入 should return {}', () => {
         expect(parseQuery('https://www.baidu.com')).toEqual({})
+    })
+    it('空键值对参数 URL传入 should return {baidu: "123"}', () => {
+        expect(parseQuery('https://www.baidu.com?=123')).toEqual({})
     })
     it('简单参数 URL传入 should return {baidu: "123"}', () => {
         expect(parseQuery('https://www.baidu.com?baidu=123')).toEqual({ baidu: '123' })
@@ -392,6 +395,24 @@ describe('解析 url 中 的参数 -> parseQuery', () => {
             { prop: 'google', type: 'string' }
         ])
         expect(query).toEqual({ baidu: 123, google: 'true' })
+    })
+    it('复杂参数 URL 传入 -> 返回 {}', () => {
+        const query = parseQuery(
+            'https://www.baidu.com?rsv_idx=1&wd=%E7%A7%91%E5%85%B4%E4%B8%89%E9%92%88%E9%98%B2%E6%84%9F%E6%9F%93%E7%8E%87%E4%BB%858%25%EF%BC%9F%E7%9C%9F%E7%9B%B8%E6%9D%A5%E4%BA%86&fenlei=256&ie=utf-8&rsv_pq=83e8425900018268&oq=javascript%20set%E5%AF%B9%E8%B1%A1&rsv_t=880dSHDqzYvVOj2Bx1AvNyt9xWsT%2BbrnCSKRXC%2B6vGXhOGOXhgxzAD%2FnXII&rqid=83e8425900018268&rsf=96d9f12d576211e0f28bf507c0bf9661_1_15_2&rsv_dl=0_right_fyb_pchot_20811&sa=0_right_fyb_pchot_20811&='
+        )
+        expect(query).toEqual({
+            rsv_idx: '1',
+            wd: '科兴三针防感染率仅8%？真相来了',
+            fenlei: '256',
+            ie: 'utf-8',
+            rsv_pq: '83e8425900018268',
+            oq: 'javascript set对象',
+            rqid: '83e8425900018268',
+            rsf: '96d9f12d576211e0f28bf507c0bf9661_1_15_2',
+            rsv_t: '880dSHDqzYvVOj2Bx1AvNyt9xWsT brnCSKRXC 6vGXhOGOXhgxzAD/nXII',
+            sa: '0_right_fyb_pchot_20811',
+            rsv_dl: '0_right_fyb_pchot_20811'
+        })
     })
 })
 

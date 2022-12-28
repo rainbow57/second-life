@@ -1,5 +1,6 @@
 export * from './time'
 export * from './map'
+export * from './tree'
 export * from './validate/validate'
 
 export function typeOf(value: any): string {
@@ -148,7 +149,11 @@ export function parseQuery(url: string, types: fieldType[] = []): objectType {
             }
         })
     }
-    return query
+    const keys = Object.keys(query)
+    const result: objectType = {}
+    // 过滤掉键为空的对
+    keys.filter(key => !!key).forEach(cur => (result[cur] = query[cur]))
+    return result
 }
 
 export function stringifyQuery(query: objectType = {}): string {
