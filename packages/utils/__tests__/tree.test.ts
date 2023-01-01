@@ -1,4 +1,4 @@
-import { getParentId, list2Tree } from '../src/tree'
+import { getParent, getParentId, getTreePath, list2Tree } from '../src/tree'
 
 describe('====从数组中找出对应值的父节点 Id -> getParentId====', () => {
     it('空值传入 -> getParentId', () => {
@@ -184,6 +184,7 @@ describe('====将普通数组转换成树形数组 list2Tree ====', () => {
                     { id: 12, pid: 1 }
                 ]
             },
+            { id: 13, pid: 1 },
             { id: 2, pid: 0 },
             { id: 22, pid: 2 },
             { id: 3, pid: 0 }
@@ -195,11 +196,346 @@ describe('====将普通数组转换成树形数组 list2Tree ====', () => {
                 pid: 0,
                 child: [
                     { id: 11, pid: 1 },
-                    { id: 12, pid: 1 }
+                    { id: 12, pid: 1 },
+                    { id: 13, pid: 1 }
                 ]
             },
             { id: 2, pid: 0, child: [{ id: 22, pid: 2 }] },
             { id: 3, pid: 0 }
         ])
+    })
+})
+
+describe('==== 获取数组中指定值的父节点对象 -> getParent ====', () => {
+    it('传入空值', () => {
+        expect(getParent(undefined, undefined)).toEqual(undefined)
+        expect(getParent(undefined, null)).toEqual(undefined)
+        expect(getParent(null, undefined)).toEqual(undefined)
+        expect(getParent(null, null)).toEqual(undefined)
+    })
+
+    it('传入默认键值的数组，无法查找到 -> 返回 undefined', () => {
+        expect(
+            getParent(
+                [
+                    { id: 1, parentId: 0 },
+                    { id: 2, parentId: 0 }
+                ],
+                3
+            )
+        ).toEqual(undefined)
+        expect(
+            getParent(
+                [
+                    { id: 1, parentId: 0 },
+                    { id: 2, parentId: 0 }
+                ],
+                2
+            )
+        ).toEqual(undefined)
+    })
+
+    it('传入默认键值的数组，在第一层查找到 -> 返回 {id: 0}', () => {
+        expect(getParent([{ id: 1, parentId: 0 }, { id: 2, parentId: 0 }, { id: 0 }], 2)).toEqual({
+            id: 0
+        })
+    })
+    it('传入默认键值的数组，在第二层查找到 -> 返回 {id: 3, parentId: 0, children: [...]}', () => {
+        expect(
+            getParent(
+                [
+                    { id: 1, parentId: 0 },
+                    { id: 2, parentId: 0 },
+                    { id: 3, parentId: 0, children: [{ id: 31, parentId: 3 }] }
+                ],
+                31
+            )
+        ).toEqual({ id: 3, parentId: 0, children: [{ id: 31, parentId: 3 }] })
+    })
+    it('传入默认键值的数组，在第三层查找到 -> 返回 {id: 31, parentId: 3, children: [...]}', () => {
+        const list = [
+            { id: 1, parentId: 0 },
+            { id: 2, parentId: 0 },
+            {
+                id: 3,
+                parentId: 0,
+                children: [{ id: 31, parentId: 3, children: [{ id: 311, parentId: 31 }] }]
+            }
+        ]
+        expect(getParent(list, 311)).toEqual({
+            id: 31,
+            parentId: 3,
+            children: [{ id: 311, parentId: 31 }]
+        })
+    })
+
+    it('传入自定义键值的数组，无法查找到 -> 返回 undefined', () => {
+        expect(
+            getParent(
+                [
+                    { id: 1, pid: 0 },
+                    { id: 2, pid: 0 }
+                ],
+                3,
+                { parent: 'pid', children: 'child' }
+            )
+        ).toEqual(undefined)
+        expect(
+            getParent(
+                [
+                    { id: 1, pid: 0 },
+                    { id: 2, pid: 0 }
+                ],
+                2,
+                { parent: 'pid', children: 'child' }
+            )
+        ).toEqual(undefined)
+    })
+
+    it('传入自定义键值的数组，在第一层查找到 -> 返回 {id: 0}', () => {
+        expect(
+            getParent([{ id: 1, pid: 0 }, { id: 2, pid: 0 }, { id: 0 }], 2, {
+                parent: 'pid',
+                children: 'child'
+            })
+        ).toEqual({ id: 0 })
+    })
+    it('传入自定义键值的数组，在第二层查找到 -> 返回 {id: 3, pid: 0, child: [...]}', () => {
+        expect(
+            getParent(
+                [
+                    { id: 1, pid: 0 },
+                    { id: 2, pid: 0 },
+                    { id: 3, pid: 0, child: [{ id: 31, pid: 3 }] }
+                ],
+                31,
+                { parent: 'pid', children: 'child' }
+            )
+        ).toEqual({ id: 3, pid: 0, child: [{ id: 31, pid: 3 }] })
+    })
+    it('传入自定义键值的数组，在第三层查找到 -> 返回 {id: 31, pid: 3, child: [...]}', () => {
+        const list = [
+            { id: 1, pid: 0 },
+            { id: 2, pid: 0 },
+            { id: 3, pid: 0, child: [{ id: 31, pid: 3, child: [{ id: 311, pid: 31 }] }] }
+        ]
+        expect(getParent(list, 311, { parent: 'pid', children: 'child' })).toEqual({
+            id: 31,
+            pid: 3,
+            child: [{ id: 311, pid: 31 }]
+        })
+    })
+})
+
+describe('==== 获取值所在的路径 -> getTreePath ====', () => {
+    it('空值传入 -> 返回 []', () => {
+        expect(getTreePath(undefined)).toEqual([])
+        expect(getTreePath(null)).toEqual([])
+        expect(getTreePath([])).toEqual([])
+        expect(getTreePath([undefined])).toEqual([])
+        expect(getTreePath([undefined, null])).toEqual([])
+    })
+    it('传入默认键值的普通数组, 无法查找到的值 -> 返回[]', () => {
+        expect(
+            getTreePath(
+                [
+                    { id: 1, parentId: 0 },
+                    { id: 2, parentId: 0 }
+                ],
+                3
+            )
+        ).toEqual([])
+        expect(
+            getTreePath(
+                [
+                    { id: 1, parentId: 0 },
+                    { id: 2, parentId: 0 },
+                    { id: 21, parentId: 2 }
+                ],
+                3
+            )
+        ).toEqual([])
+    })
+    it('传入自定义键值的普通数组, 无法查找到的值 -> 返回[]', () => {
+        expect(
+            getTreePath(
+                [
+                    { prop: 1, pid: 0 },
+                    { prop: 2, pid: 0 }
+                ],
+                3,
+                { field: 'prop', parent: 'pid', children: 'child' }
+            )
+        ).toEqual([])
+        expect(
+            getTreePath(
+                [
+                    { prop: 1, pid: 0 },
+                    { prop: 2, pid: 0 },
+                    { prop: 21, pid: 2 }
+                ],
+                3,
+                { field: 'prop', parent: 'pid', children: 'child' }
+            )
+        ).toEqual([])
+    })
+    it('传入默认键值的普通数组, 能查找到的值 -> 返回数组', () => {
+        expect(
+            getTreePath(
+                [
+                    { id: 1, parentId: 0 },
+                    { id: 2, parentId: 0 }
+                ],
+                2
+            )
+        ).toEqual([2])
+        expect(
+            getTreePath(
+                [
+                    { id: 1, parentId: 0 },
+                    { id: 2, parentId: 0 },
+                    { id: 21, parentId: 2 }
+                ],
+                21
+            )
+        ).toEqual([2, 21])
+    })
+    it('传入自定义键值的普通数组, 能查找到的值 -> 返回数组', () => {
+        expect(
+            getTreePath(
+                [
+                    { prop: 1, pid: 0 },
+                    { prop: 2, pid: 0 }
+                ],
+                3,
+                { field: 'prop', parent: 'pid', children: 'child' }
+            )
+        ).toEqual([])
+        expect(
+            getTreePath(
+                [
+                    { prop: 1, pid: 0 },
+                    { prop: 2, pid: 0 },
+                    { prop: 21, pid: 2 },
+                    { prop: 211, pid: 21 }
+                ],
+                21,
+                { field: 'prop', parent: 'pid', children: 'child' }
+            )
+        ).toEqual([2, 21])
+        expect(
+            getTreePath(
+                [
+                    { prop: 1, pid: 0 },
+                    { prop: 2, pid: 0 },
+                    { prop: 21, pid: 2 },
+                    { prop: 211, pid: 21 }
+                ],
+                211,
+                { field: 'prop', parent: 'pid', children: 'child' }
+            )
+        ).toEqual([2, 21, 211])
+    })
+    it('传入默认键值的树形数组, 无法查找到的值 -> 返回[]', () => {
+        expect(
+            getTreePath(
+                [
+                    { id: 1, parentId: 0 },
+                    { id: 2, parentId: 0 }
+                ],
+                3
+            )
+        ).toEqual([])
+        expect(
+            getTreePath(
+                [
+                    { id: 1, parentId: 0 },
+                    { id: 2, parentId: 0, children: [{ id: 21, parentId: 2 }] }
+                ],
+                3
+            )
+        ).toEqual([])
+    })
+    it('传入自定义键值的树形数组, 无法查找到的值 -> 返回[]', () => {
+        expect(
+            getTreePath(
+                [
+                    { prop: 1, pid: 0 },
+                    { prop: 2, pid: 0 }
+                ],
+                3,
+                { field: 'prop', parent: 'pid', children: 'child' }
+            )
+        ).toEqual([])
+        expect(
+            getTreePath(
+                [
+                    { prop: 1, pid: 0 },
+                    { prop: 2, pid: 0, child: [{ prop: 21, pid: 2 }] }
+                ],
+                3,
+                { field: 'prop', parent: 'pid', children: 'child' }
+            )
+        ).toEqual([])
+    })
+    it('传入默认键值的树形数组, 能查找到的值 -> 返回数组', () => {
+        expect(
+            getTreePath(
+                [
+                    { id: 1, parentId: 0 },
+                    { id: 2, parentId: 0 }
+                ],
+                2
+            )
+        ).toEqual([2])
+        expect(
+            getTreePath(
+                [
+                    { id: 1, parentId: 0 },
+                    { id: 2, parentId: 0, children: [{ id: 21, parentId: 2 }] }
+                ],
+                21
+            )
+        ).toEqual([2, 21])
+    })
+    it('传入自定义键值的树形数组, 能查找到的值 -> 返回数组', () => {
+        expect(
+            getTreePath(
+                [
+                    { prop: 1, pid: 0 },
+                    { prop: 2, pid: 0 }
+                ],
+                3,
+                { field: 'prop', parent: 'pid', children: 'child' }
+            )
+        ).toEqual([])
+        expect(
+            getTreePath(
+                [
+                    { prop: 1, pid: 0 },
+                    {
+                        prop: 2,
+                        pid: 0,
+                        child: [{ prop: 21, pid: 2, child: [{ prop: 211, pid: 21 }] }]
+                    }
+                ],
+                21,
+                { field: 'prop', parent: 'pid', children: 'child' }
+            )
+        ).toEqual([2, 21])
+        expect(
+            getTreePath(
+                [
+                    { prop: 1, pid: 0 },
+                    {
+                        prop: 2,
+                        pid: 0,
+                        child: [{ prop: 21, pid: 2, child: [{ prop: 211, pid: 21 }] }]
+                    }
+                ],
+                211,
+                { field: 'prop', parent: 'pid', children: 'child' }
+            )
+        ).toEqual([2, 21, 211])
     })
 })
