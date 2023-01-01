@@ -1,3 +1,12 @@
+## [0.0.12](https://github.com/rainbow57/second-life/compare/v0.0.11...v0.0.12) (2023-01-01)
+
+
+### Features
+
+* :sparkles: 新增 getTreePath 函数，返回指定值在树形对象数组中的键值数组链 ([5e36f4d](https://github.com/rainbow57/second-life/commit/5e36f4decebe23e3c13680343b999a46b762bf70))
+
+
+
 ## [0.0.11](https://github.com/rainbow57/second-life/compare/v0.0.10...v0.0.11) (2022-12-28)
 
 
