@@ -30,32 +30,60 @@ const name = packageOptions.filename || path.basename(packageDir)
 let hasTSChecked = false
 
 const outputConfigs = {
+	// 'esm-bundler': {
+	// 	file: resolve(`dist/${name}.esm-bundler.js`),
+	// 	format: 'es'
+	// },
+	// 'esm-browser': {
+	// 	file: resolve(`dist/${name}.esm-browser.js`),
+	// 	format: 'es'
+	// },
+	// cjs: {
+	// 	file: resolve(`dist/${name}.cjs.js`),
+	// 	format: 'cjs'
+	// },
+	// global: {
+	// 	file: resolve(`dist/${name}.global.js`),
+	// 	format: 'iife'
+	// },
+	// 'esm-bundler-runtime': {
+	// 	file: resolve(`dist/${name}.runtime.esm-bundler.js`),
+	// 	format: 'es'
+	// },
+	// 'esm-browser-runtime': {
+	// 	file: resolve(`dist/${name}.runtime.esm-browser.js`),
+	// 	format: 'es'
+	// },
+	// 'global-runtime': {
+	// 	file: resolve(`dist/${name}.runtime.global.js`),
+	// 	format: 'iife'
+	// }
 	'esm-bundler': {
-		file: resolve(`dist/${name}.esm-bundler.js`),
+		file: resolve(`dist/index.esm-bundler.js`),
 		format: 'es'
 	},
 	'esm-browser': {
-		file: resolve(`dist/${name}.esm-browser.js`),
+		file: resolve(`dist/index.esm-browser.js`),
 		format: 'es'
 	},
 	cjs: {
-		file: resolve(`dist/${name}.cjs.js`),
+		file: resolve(`dist/index.cjs.js`),
 		format: 'cjs'
 	},
 	global: {
-		file: resolve(`dist/${name}.global.js`),
+		file: resolve(`dist/index.global.js`),
 		format: 'iife'
 	},
 	'esm-bundler-runtime': {
-		file: resolve(`dist/${name}.runtime.esm-bundler.js`),
+		file: resolve(`dist/index.runtime.esm-bundler.js`),
 		format: 'es'
 	},
 	'esm-browser-runtime': {
-		file: resolve(`dist/${name}.runtime.esm-browser.js`),
+		file: resolve(`dist/index.runtime.esm-browser.js`),
 		format: 'es'
 	},
 	'global-runtime': {
-		file: resolve(`dist/${name}.runtime.global.js`),
+		file: resolve(`dist/index.runtime.global.js`),
 		format: 'iife'
 	}
 }
