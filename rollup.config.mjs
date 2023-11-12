@@ -67,7 +67,7 @@ const outputConfigs = {
 		format: 'es'
 	},
 	cjs: {
-		file: resolve(`dist/index.cjs.js`),
+		file: resolve(`dist/index.js`),
 		format: 'cjs'
 	},
 	global: {
