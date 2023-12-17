@@ -175,3 +175,10 @@ export function stringifyQuery(query: objectType = {}): string {
         )
         .join('&')
 }
+
+export function toCamelCase(str: string): string {
+    return str.split('-').map((word, index) => {
+        // 将第一个单词保持原样，将其他单词首字母大写
+        return !index ? word : word.charAt(0).toUpperCase() + word.slice(1)
+    }).join('')
+}
