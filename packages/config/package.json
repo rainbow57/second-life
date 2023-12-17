@@ -1,8 +1,9 @@
 {
   "name": "@rainbow57/config",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "查询、表格、新增/编辑 Form的字段定义",
-  "main": "index.js",
+  "main": "dist/config.cjs.js",
+  "module": "dist/config.esm-bundler.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

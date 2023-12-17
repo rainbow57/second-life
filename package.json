@@ -1,9 +1,9 @@
 {
   "name": "@rainbow57/packages",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "前端常用工具集",
   "main": "dist/utils.cjs.js",
-  "module": "dist/utils.esm.js",
+  "module": "dist/utils.esm-bundler.js",
   "browser": "dist/utils.umd.js",
   "unpkg": "dist/utils.min.js",
   "jsdelivr": "dist/utils.min.js",
