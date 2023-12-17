@@ -31,31 +31,31 @@ let hasTSChecked = false
 
 const outputConfigs = {
 	'esm-bundler': {
-		file: resolve(`dist/${name}.esm-bundler.js`),
+		file: resolve(`dist/index.esm-bundler.js`),
 		format: 'es'
 	},
 	'esm-browser': {
-		file: resolve(`dist/${name}.esm-browser.js`),
+		file: resolve(`dist/index.esm-browser.js`),
 		format: 'es'
 	},
 	cjs: {
-		file: resolve(`dist/${name}.cjs.js`),
+		file: resolve(`dist/index.cjs.js`),
 		format: 'cjs'
 	},
 	global: {
-		file: resolve(`dist/${name}.global.js`),
+		file: resolve(`dist/index.global.js`),
 		format: 'iife'
 	},
 	'esm-bundler-runtime': {
-		file: resolve(`dist/${name}.runtime.esm-bundler.js`),
+		file: resolve(`dist/index.runtime.esm-bundler.js`),
 		format: 'es'
 	},
 	'esm-browser-runtime': {
-		file: resolve(`dist/${name}.runtime.esm-browser.js`),
+		file: resolve(`dist/index.runtime.esm-browser.js`),
 		format: 'es'
 	},
 	'global-runtime': {
-		file: resolve(`dist/${name}.runtime.global.js`),
+		file: resolve(`dist/index.runtime.global.js`),
 		format: 'iife'
 	}
 }
@@ -223,7 +223,7 @@ function createConfig(format, output, plugins = []) {
  */
 function createProductionConfig(format) {
 	return createConfig(format, {
-		file: resolve(`dist/${name}.${format}.prod.js`),
+		file: resolve(`dist/${name}.${format}.js`),
 		format: outputConfigs[format].format
 	})
 }
@@ -235,7 +235,7 @@ function createMinifiedConfig(format) {
 	return createConfig(
 		format,
 		{
-			file: outputConfigs[format].file.replace(/\.js$/, '.prod.js'),
+			file: outputConfigs[format].file,
 			format: outputConfigs[format].format
 		},
 		[
