@@ -27,7 +27,14 @@ const versionIncrements = [
 
 const inc = i => semver.inc(currentVersion, i, preId)
 const bin = name => path.resolve(__dirname, '../node_modules/.bin/' + name)
-const run = (bin, args, opts = {}) => execa(bin, args, { stdio: 'inherit', ...opts })
+const run = async (bin, args, opts = {}) => {
+    console.log('bin :>> ', bin)
+    console.log('args :>> ', args)
+    console.log('opts :>> ', opts)
+    const result = await execa(bin, args, { stdio: 'inherit', ...opts })
+    console.log('result :>> ', result)
+    return result
+}
 const dryRun = (bin, args, opts = {}) =>
     console.log(chalk.blue(`[dryrun] ${bin} ${args.join(' ')}`), opts)
 const runIfNotDry = isDryRun ? dryRun : run

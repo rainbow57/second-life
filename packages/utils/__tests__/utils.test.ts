@@ -450,36 +450,28 @@ describe('将对象类型解析成 URL 上的 query 键值对字符串 -> string
     })
 })
 
-// camelCaseConverter.ts
-export function toCamelCase(str: string): string {
-    return str.split('-').map((word, index) => {
-        return index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1);
-    }).join('');
-}
-
 // camelCaseConverter.test.ts
 
 describe('toCamelCase', () => {
     it('converts single-word string to the same string', () => {
-        expect(toCamelCase('hello')).toBe('hello');
-    });
+        expect(toCamelCase('hello')).toBe('hello')
+    })
 
     it('converts multi-word string to camelCase', () => {
-        expect(toCamelCase('hello-world')).toBe('helloWorld');
-        expect(toCamelCase('my-name-is-john')).toBe('myNameIsJohn');
-    });
+        expect(toCamelCase('hello-world')).toBe('helloWorld')
+        expect(toCamelCase('my-name-is-john')).toBe('myNameIsJohn')
+    })
 
     it('handles empty strings', () => {
-        expect(toCamelCase('')).toBe('');
-    });
+        expect(toCamelCase('')).toBe('')
+    })
 
     it('handles strings with multiple consecutive hyphens', () => {
-        expect(toCamelCase('my--name--is--john')).toBe('myNameIsJohn');
-    });
+        expect(toCamelCase('my--name--is--john')).toBe('myNameIsJohn')
+    })
 
     it('handles strings that start or end with a hyphen', () => {
-        expect(toCamelCase('-hello-world')).toBe('HelloWorld');
-        expect(toCamelCase('hello-world-')).toBe('helloWorld');
-    });
-});
-
+        expect(toCamelCase('-hello-world')).toBe('HelloWorld')
+        expect(toCamelCase('hello-world-')).toBe('helloWorld')
+    })
+})

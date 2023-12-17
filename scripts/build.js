@@ -16,6 +16,7 @@ const isRelease = args.release
 const buildTypes = args.t || args.types || isRelease
 const buildAllMatching = args.all || args.a
 const commit = execa.sync('git', ['rev-parse', 'HEAD']).stdout.slice(0, 7)
+console.log('buildTypes :>> ', buildTypes)
 
 /**
  * 并行执行
@@ -145,6 +146,7 @@ function checkAllSizes(targets) {
 }
 
 async function run() {
+    console.log('isRelease :>> ', isRelease)
     if (isRelease) {
         await fs.remove(path.resolve(__dirname, './node_modules/.rts2_cache'))
     }
